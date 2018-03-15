@@ -17,7 +17,7 @@ test.afterEach(async t => {
   t.context.browser.close()
 })
 
-test('jsonp', async t => {
+test('ajax', async t => {
   const { page } = t.context
   await page.goto(`http://127.0.0.1:${testPort}/test/ajax/index.html`)
   await sleep(500)
@@ -27,6 +27,12 @@ test('jsonp', async t => {
   })
 
   t.truthy(state === 2)
+
+  const pkg = await page.evaluate(() => {
+    return request2
+  })
+
+  t.is(pkg.name, 'dx-lib')
 })
 
 function sleep(duration) {

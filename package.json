@@ -10,6 +10,10 @@
   "testPort": 18860,
   "author": "dongshuang.xiao",
   "license": "ISC",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/zenxds/dx-lib.git"
+  },
   "ava": {
     "require": [
       "@babel/register"

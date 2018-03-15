@@ -4,12 +4,12 @@ dx fe lib
 
 ## modules
 
-* [ajax](doc/ajax)
-* [jsonp](doc/jsonp)
-* [domready](doc/domready)
-* [cookie](doc/cookie)
-* [param](doc/param)
-* [base64](doc/base64)
-* [json](doc/json)
-* [Promise](doc/Promise)
-* [Events](doc/Events)
+* [ajax](doc/ajax.md)
+* [jsonp](doc/jsonp.md)
+* [domready](doc/domready.md)
+* [cookie](doc/cookie.md)
+* [param](doc/param.md)
+* [base64](doc/base64.md)
+* [json](doc/json.md)
+* [Promise](doc/Promise.md)
+* [Events](doc/Events.md)
