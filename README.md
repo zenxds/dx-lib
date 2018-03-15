@@ -2,6 +2,12 @@
 
 dx fe lib
 
+## install
+
+```
+yarn add dx-lib --save
+```
+
 ## modules
 
 * [ajax](doc/ajax.md)

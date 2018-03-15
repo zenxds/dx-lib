@@ -16,9 +16,9 @@ p.isPending()
 p.isFulfilled()
 p.isRejected()
 
-Promise.all
-Promise.race
-Promise.resolve
-Promise.reject
-Promise.defer
+Promise.all()
+Promise.race()
+Promise.resolve()
+Promise.reject()
+Promise.defer()
 ```
