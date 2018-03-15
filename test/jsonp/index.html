@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>jsonp</title>
+</head>
+<body>
+  <script type="module">
+  import jsonp from '../../lib/jsonp/index.js'
+
+  window.request = jsonp({
+    url: '/aaa',
+    data: {
+      a: 'a',
+      b: 'b'
+    },
+    callback: '_callback',
+    timeout: 300
+  })
+  </script>
+</body>
+</html>

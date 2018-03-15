@@ -1,0 +1,33 @@
+{
+  "name": "dx-lib",
+  "version": "0.1.0",
+  "description": "dx fe lib",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run _static-server && ava ; kill \"$(ps aux | grep -v static-server | grep http-server | grep 18860 | awk '{print $2}')\"",
+    "_static-server": "http-server -s -p 18860 . &"
+  },
+  "testPort": 18860,
+  "author": "dongshuang.xiao",
+  "license": "ISC",
+  "ava": {
+    "require": [
+      "@babel/register"
+    ],
+    "files": [
+      "test/**/*.spec.js"
+    ],
+    "source": [
+      "lib/**/*.js"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.41",
+    "@babel/preset-env": "^7.0.0-beta.41",
+    "@babel/register": "^7.0.0-beta.41",
+    "ava": "^0.25.0",
+    "expect.js": "^0.3.1",
+    "puppeteer": "^1.1.1",
+    "sinon": "^4.4.5"
+  }
+}
