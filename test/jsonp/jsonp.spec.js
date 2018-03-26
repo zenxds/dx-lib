@@ -26,7 +26,7 @@ test('jsonp', async t => {
     return request._state
   })
 
-  t.truthy(state === 2)
+  t.truthy(state === 1)
 })
 
 function sleep(duration) {
