@@ -26,4 +26,13 @@ test('json', async t => {
   })
 
   t.deepEqual(data, { a: "a", b: "b" })
+
+  let strs = await page.evaluate(() => {
+    return {
+      str1: stringifyJSON({ a: "a", b: "b" }),
+      str2: stringifyJSON({ a: "a", b: "b" }, null, 4),
+      str3: stringifyJSON({ a: "a", b: "b" }, null, '@')
+    }
+  })
+  t.is(strs.str1, '{"a":"a","b":"b"}')
 })
