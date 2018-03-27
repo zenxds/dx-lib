@@ -19,3 +19,21 @@ yarn add dx-lib --save
 * [json](doc/json.md)
 * [Promise](doc/Promise.md)
 * [Events](doc/Events.md)
+
+## .babelrc
+
+不加入到提交，因为会影响引用时的打包
+
+```
+{
+  "presets": [
+    ["@babel/preset-env", {
+      "targets": {
+        "browsers": ["last 2 versions", "safari >= 7"],
+        "node": true
+      }
+    }]
+  ],
+  "plugins": []
+}
+```
