@@ -12,6 +12,7 @@ yarn add dx-lib --save
 
 * [ajax](doc/ajax.md)
 * [jsonp](doc/jsonp.md)
+* [loader](doc/loader.md)
 * [domready](doc/domready.md)
 * [cookie](doc/cookie.md)
 * [param](doc/param.md)
