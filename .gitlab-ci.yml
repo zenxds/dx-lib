@@ -1,0 +1,17 @@
+image: node:latest
+
+cache:
+  paths:
+  - node_modules/
+
+stages:
+  - test
+
+test_job:
+  stage: test
+  script:
+   - npm install -g yarn
+   - yarn install
+   - npm run test
+  tags:
+    - fe
