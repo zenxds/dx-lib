@@ -1,6 +1,6 @@
 # dx-lib
 
-dx fe lib
+![build status](https://dev.dingxiang-inc.com/fe/dx-lib/badges/master/build.svg) dx fe lib 
 
 ## install
 
