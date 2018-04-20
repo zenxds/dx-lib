@@ -1,4 +1,4 @@
-image: node:8
+image: node:latest
 
 cache:
   paths:
@@ -10,7 +10,6 @@ stages:
 test_job:
   stage: test
   script:
-   - npm install -g yarn
    - yarn install
    - npm run test
   tags:
