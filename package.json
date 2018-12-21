@@ -1,10 +1,11 @@
 {
   "name": "dx-lib",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "dx fe lib",
   "main": "index.js",
   "scripts": {
-    "test": "npm run _static-server && ava ; kill \"$(ps aux | grep -v static-server | grep http-server | grep 18860 | awk '{print $2}')\"",
+    "test": "npm run _static-server && ava && npm run kill",
+    "kill": "ps ax | grep http-server | grep 18860 | awk '{print $1}' | xargs kill",
     "_static-server": "http-server -s -p 18860 . &"
   },
   "testPort": 18860,
