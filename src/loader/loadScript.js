@@ -1,9 +1,9 @@
-import Promise from '../Promise/index.js'
+import Promise from '../Promise'
 
-const head = document.head || document.getElementsByTagName("head")[0]
+const head = document.head || document.getElementsByTagName('head')[0]
 
-export default function(url, options={}) {
-  let node = document.createElement("script")
+export default function (url, options = {}) {
+  let node = document.createElement('script')
   let defer = Promise.defer()
 
   options.timeout = options.timeout || 10000
@@ -20,7 +20,7 @@ export default function(url, options={}) {
   if ('onload' in node) {
     node.onload = onload
   } else {
-    node.onreadystatechange = function() {
+    node.onreadystatechange = function () {
       if (/loaded|complete/.test(node.readyState)) {
         onload()
       }
@@ -28,12 +28,12 @@ export default function(url, options={}) {
   }
 
   if ('onerror' in node) {
-    node.onerror = function(err) {
+    node.onerror = function (err) {
       defer.reject(err)
     }
   }
 
-  setTimeout(function() {
+  setTimeout(function () {
     defer.reject(new Error('timeout'))
   }, options.timeout)
 

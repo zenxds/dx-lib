@@ -1,9 +1,11 @@
 const toString = Object.prototype.toString
-const isArray = Array.isArray || function(val) {
-  return toString.call(val) === '[object Array]'
-}
+const isArray =
+  Array.isArray ||
+  function (val) {
+    return toString.call(val) === '[object Array]'
+  }
 
-const isValidParamValue = (val) => {
+const isValidParamValue = val => {
   const t = typeof val
   // If the type of val is null, undefined, number, string, boolean, return TRUE.
   return val === null || (t !== 'object' && t !== 'function')
@@ -15,7 +17,7 @@ const endsWith = (str, suffix) => {
 
 const encode = encodeURIComponent
 
-const decode = (s) => {
+const decode = s => {
   try {
     return decodeURIComponent(s.replace(/\+/g, ' '))
   } catch (err) {
@@ -32,7 +34,7 @@ export const param = (o, sep, eq, serializeArray) => {
 
   const buf = []
 
-  for (let key in o) {  
+  for (let key in o) {
     const val = o[key]
     key = encode(key)
 
@@ -51,7 +53,7 @@ export const param = (o, sep, eq, serializeArray) => {
         const v = val[i]
         if (isValidParamValue(v)) {
           // ?aParam[]=value1&aParam[]=value2&aParam[]=value3
-          buf.push(key, (serializeArray ? encode('[]') : ''))
+          buf.push(key, serializeArray ? encode('[]') : '')
           if (v !== undefined) {
             buf.push(eq, encode(v + ''))
           }
@@ -85,7 +87,8 @@ export const unparam = (str, sep, eq) => {
 
   for (let i = 0; i < length; ++i) {
     const eqIndex = pairs[i].indexOf(eq)
-    if (eqIndex === -1) { // 没有=
+    if (eqIndex === -1) {
+      // 没有=
       key = decode(pairs[i])
       val = undefined
     } else {

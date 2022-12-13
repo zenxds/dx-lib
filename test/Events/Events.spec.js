@@ -1,67 +1,59 @@
-import test from 'ava'
-import expect from 'expect.js'
 import sinon from 'sinon'
-import Events from '../../lib/Events'
+import Events from '../../src/Events'
 
-test('on and emit', t => {
+test('on and emit', () => {
   let obj = new Events()
   let spy = sinon.spy()
 
   obj.on('event', spy)
 
   obj.emit('event', 1, 2)
-  expect(spy.callCount).to.be(1)
+  expect(spy.callCount).toBe(1)
 
   obj.emit('event')
   obj.emit('event')
   obj.emit('event')
   obj.emit('event')
-  expect(spy.callCount).to.be(5)
-
-  t.pass()
+  expect(spy.callCount).toBe(5)
 })
 
-test('on and emit', t => {
+test('on and emit', () => {
   let obj = new Events()
   let spy = sinon.spy()
 
   obj.on('event', spy)
 
   obj.emit('event')
-  expect(spy.callCount).to.be(1)
+  expect(spy.callCount).toBe(1)
 
   obj.emit('event')
   obj.emit('event')
   obj.emit('event')
   obj.emit('event')
-  expect(spy.callCount).to.be(5)
-
-  t.pass()
+  expect(spy.callCount).toBe(5)
 })
 
-test('binding and triggering multiple events', t => {
+test('binding and triggering multiple events', () => {
   let obj = new Events()
   let spy = sinon.spy()
 
   obj.on('a b c', spy)
 
   obj.trigger('a')
-  expect(spy.callCount).to.be(1)
+  expect(spy.callCount).toBe(1)
 
   obj.trigger('a b')
-  expect(spy.callCount).to.be(3)
+  expect(spy.callCount).toBe(3)
 
   obj.trigger('c')
-  expect(spy.callCount).to.be(4)
+  expect(spy.callCount).toBe(4)
 
   obj.off('a c')
   obj.trigger('a b c')
-  expect(spy.callCount).to.be(5)
-
-  t.pass()
+  expect(spy.callCount).toBe(5)
 })
 
-test('trigger all for each event', t => {
+test('trigger all for each event', () => {
   let obj = new Events()
   let spy = sinon.spy()
   let spy2 = sinon.spy()
@@ -70,34 +62,30 @@ test('trigger all for each event', t => {
   obj.on('c', spy2)
 
   obj.trigger('a b')
-  expect(spy.callCount).to.be(2)
+  expect(spy.callCount).toBe(2)
   expect(spy.calledWith('a'))
   expect(spy.calledWith('b'))
 
   obj.trigger('c')
-  expect(spy.callCount).to.be(3)
-  expect(spy2.callCount).to.be(1)
+  expect(spy.callCount).toBe(3)
+  expect(spy2.callCount).toBe(1)
   expect(spy2.calledBefore(spy))
-
-  t.pass()
 })
 
-test('on, then unbind all functions', t => {
+test('on, then unbind all functions', () => {
   let obj = new Events()
   let spy = sinon.spy()
 
   obj.on('event', spy)
   obj.trigger('event')
-  expect(spy.callCount).to.be(1)
+  expect(spy.callCount).toBe(1)
 
   obj.off('event')
   obj.trigger('event')
-  expect(spy.callCount).to.be(1)
-
-  t.pass()
+  expect(spy.callCount).toBe(1)
 })
 
-test('bind two callbacks, unbind only one', t => {
+test('bind two callbacks, unbind only one', () => {
   let obj = new Events()
   let spyA = sinon.spy()
   let spyB = sinon.spy()
@@ -106,18 +94,16 @@ test('bind two callbacks, unbind only one', t => {
   obj.on('event', spyB)
 
   obj.trigger('event')
-  expect(spyA.callCount).to.be(1)
-  expect(spyB.callCount).to.be(1)
+  expect(spyA.callCount).toBe(1)
+  expect(spyB.callCount).toBe(1)
 
   obj.off('event', spyA)
   obj.trigger('event')
-  expect(spyA.callCount).to.be(1)
-  expect(spyB.callCount).to.be(2)
-
-  t.pass()
+  expect(spyA.callCount).toBe(1)
+  expect(spyB.callCount).toBe(2)
 })
 
-test('unbind a callback in the midst of it firing', t => {
+test('unbind a callback in the midst of it firing', () => {
   let obj = new Events()
   let spy = sinon.spy()
 
@@ -131,11 +117,10 @@ test('unbind a callback in the midst of it firing', t => {
   obj.trigger('event')
   obj.trigger('event')
 
-  expect(spy.callCount).to.be(1)
-  t.pass()
+  expect(spy.callCount).toBe(1)
 })
 
-test('two binds that unbind themselves', t => {
+test('two binds that unbind themselves', () => {
   let obj = new Events()
   let spyA = sinon.spy()
   let spyB = sinon.spy()
@@ -156,13 +141,11 @@ test('two binds that unbind themselves', t => {
   obj.trigger('event')
   obj.trigger('event')
 
-  expect(spyA.callCount).to.be(1)
-  expect(spyB.callCount).to.be(1)
-
-  t.pass()
+  expect(spyA.callCount).toBe(1)
+  expect(spyB.callCount).toBe(1)
 })
 
-test('bind a callback with a supplied context', t => {
+test('bind a callback with a supplied context', () => {
   let obj = new Events()
   let context = {}
   let spy = sinon.spy()
@@ -171,11 +154,9 @@ test('bind a callback with a supplied context', t => {
 
   obj.trigger('event')
   expect(spy.calledOn(context))
-
-  t.pass()
 })
 
-test('nested trigger with unbind', t => {
+test('nested trigger with unbind', () => {
   let obj = new Events()
   let spy1 = sinon.spy()
   let spy2 = sinon.spy()
@@ -190,13 +171,11 @@ test('nested trigger with unbind', t => {
   obj.on('event', spy2)
   obj.trigger('event')
 
-  expect(spy1.callCount).to.be(1)
-  expect(spy2.callCount).to.be(2)
-
-  t.pass()
+  expect(spy1.callCount).toBe(1)
+  expect(spy2.callCount).toBe(2)
 })
 
-test('callback list is not altered during trigger', t => {
+test('callback list is not altered during trigger', () => {
   let obj = new Events()
   let spy = sinon.spy()
 
@@ -205,7 +184,7 @@ test('callback list is not altered during trigger', t => {
   }).trigger('event')
 
   // bind does not alter callback list
-  expect(spy.callCount).to.equal(0)
+  expect(spy.callCount).toBe(0)
 
   obj.off()
       .on('event', function() {
@@ -216,7 +195,7 @@ test('callback list is not altered during trigger', t => {
       .trigger('event')
 
   // unbind does not alter callback list
-  expect(spy.callCount).to.equal(2)
+  expect(spy.callCount).toBe(2)
 
   // 注：
   // 1. jQuery 里，是冻结的，在 triggering 时，新增或删除都不影响
@@ -233,11 +212,9 @@ test('callback list is not altered during trigger', t => {
   //
   // Ref:
   //  - https://github.com/documentcloud/backbone/pull/723
-
-  t.pass()
 })
 
-test('`o.trigger("x y")` is equal to `o.trigger("x").trigger("y")`', t => {
+test('`o.trigger("x y")` is equal to `o.trigger("x").trigger("y")`', () => {
   let obj = new Events()
   let spy = sinon.spy()
 
@@ -246,7 +223,7 @@ test('`o.trigger("x y")` is equal to `o.trigger("x").trigger("y")`', t => {
   })
   obj.trigger('x y')
 
-  expect(spy.callCount).to.be(1)
+  expect(spy.callCount).toBe(1)
 
   obj.off()
   obj.on('x', function() {
@@ -254,12 +231,10 @@ test('`o.trigger("x y")` is equal to `o.trigger("x").trigger("y")`', t => {
   })
   obj.trigger('y x')
 
-  expect(spy.callCount).to.be(1)
-
-  t.pass()
+  expect(spy.callCount).toBe(1)
 })
 
-test('`all` callback list is retrieved after each event', t => {
+test('`all` callback list is retrieved after each event', () => {
   let obj = new Events()
   let spy = sinon.spy()
 
@@ -267,20 +242,16 @@ test('`all` callback list is retrieved after each event', t => {
     obj.on('y', spy).on('all', spy)
   }).trigger('x y')
 
-  expect(spy.callCount).to.be(2)
-
-  t.pass()
+  expect(spy.callCount).toBe(2)
 })
 
-test('if no callback is provided, `on` is a noop', t => {
+test('if no callback is provided, `on` is a noop', () => {
   expect(function() {
     new Events().on('test').trigger('test')
-  }).not.to.throwException()
-
-  t.pass()
+  }).not.toThrow()
 })
 
-test('remove all events for a specific callback', t => {
+test('remove all events for a specific callback', () => {
   let obj = new Events()
   let success = sinon.spy()
   let fail = sinon.spy()
@@ -290,32 +261,28 @@ test('remove all events for a specific callback', t => {
   obj.off(null, fail)
   obj.trigger('x y')
 
-  expect(success.callCount).to.equal(4)
-  expect(fail.callCount).to.equal(0)
-
-  t.pass()
+  expect(success.callCount).toBe(4)
+  expect(fail.callCount).toBe(0)
 })
 
-test('off is chainable', t => {
+test('off is chainable', () => {
   let obj = new Events()
 
   // With no events
-  expect(obj.off()).to.equal(obj)
+  expect(obj.off()).toBe(obj)
 
   // When removing all events
   obj.on('event', function() {
   }, obj)
-  expect(obj.off()).to.equal(obj)
+  expect(obj.off()).toBe(obj)
 
   // When removing some events
   obj.on('event', function() {
   }, obj)
-  expect(obj.off('event')).to.equal(obj)
-
-  t.pass()
+  expect(obj.off('event')).toBe(obj)
 })
 
-test('splice bug for `off`', t => {
+test('splice bug for `off`', () => {
   var spy1 = sinon.spy()
   var spy2 = sinon.spy()
 
@@ -325,20 +292,18 @@ test('splice bug for `off`', t => {
   obj.on('event', spy2)
 
   obj.trigger('event')
-  expect(spy1.callCount).to.be(2)
-  expect(spy2.callCount).to.be(1)
+  expect(spy1.callCount).toBe(2)
+  expect(spy2.callCount).toBe(1)
 
   obj.off(null, spy1)
   obj.off(null, spy2)
 
   obj.trigger('event')
-  expect(spy1.callCount).to.be(2)
-  expect(spy2.callCount).to.be(1)
-
-  t.pass()
+  expect(spy1.callCount).toBe(2)
+  expect(spy2.callCount).toBe(1)
 })
 
-test('trigger returns callback status', t => {
+test('trigger returns callback status', () => {
   var obj = new Events()
   var stub1 = sinon.stub()
   var stub2 = sinon.stub()
@@ -351,33 +316,29 @@ test('trigger returns callback status', t => {
   stub1.returns(false)
   stub2.returns(true)
   stub3.returns('')
-  expect(obj.trigger('a')).to.be(false)
+  expect(obj.trigger('a')).toBe(false)
 
   stub1.returns(undefined)
   stub2.returns(null)
   stub3.returns('')
-  expect(obj.trigger('a')).not.to.be(false)
+  expect(obj.trigger('a')).not.toBe(false)
 
   stub1.returns(true)
   stub2.returns(true)
   stub3.returns(false)
-  expect(obj.trigger('a')).to.be(false)
-
-  t.pass()
+  expect(obj.trigger('a')).toBe(false)
 })
 
-test('callback context', t => {
+test('callback context', () => {
   var obj = new Events()
   var spy = sinon.spy()
   obj.on('a', spy)
 
   obj.trigger('a')
-  expect(spy.calledOn(obj)).to.be.ok()
-
-  t.pass()
+  expect(spy.calledOn(obj)).toBeTruthy()
 })
 
-test('trigger arguments', t => {
+test('trigger arguments', () => {
   var obj = new Events()
   var spy1 = sinon.spy()
   var spy2 = sinon.spy()
@@ -385,26 +346,20 @@ test('trigger arguments', t => {
   obj.on('a', spy1)
   obj.on('all', spy2)
   obj.trigger('a', 1, 2, 3)
-  expect(spy1.calledWith(1, 2, 3)).to.be.ok()
-  expect(spy2.calledWith('a', 1, 2, 3)).to.be.ok()
-
-  t.pass()
+  expect(spy1.calledWith(1, 2, 3)).toBeTruthy()
+  expect(spy2.calledWith('a', 1, 2, 3)).toBeTruthy()
 })
 
-test('#11 triggerEvents should not return undefined', t => {
+test('#11 triggerEvents should not return undefined', () => {
   var obj = new Events()
   obj.on('a', function(){})
-  expect(obj.trigger('all', 1)).to.be(true)
-
-  t.pass()
+  expect(obj.trigger('all', 1)).toBe(true)
 })
 
-test('#12 callback should be called only once when trigger', t => {
+test('#12 callback should be called only once when trigger', () => {
   var spy = sinon.spy()
   var object = new Events()
   object.on('all', spy)
   object.trigger('all')
-  expect(spy.callCount).to.be(1)
-
-  t.pass()
+  expect(spy.callCount).toBe(1)
 })

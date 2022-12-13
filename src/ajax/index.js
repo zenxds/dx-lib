@@ -1,9 +1,9 @@
-import { param } from '../param/index.js'
-import Promise from '../Promise/index.js'
-import { parseJSON } from '../json/index.js'
-import isPlainObject from './isPlainObject.js'
+import { param } from '../param'
+import Promise from '../Promise'
+import { parseJSON } from '../json'
+import isPlainObject from './isPlainObject'
 
-const noop = function() {}
+const noop = function () {}
 
 /**
  * @param {*} options
@@ -16,18 +16,21 @@ const noop = function() {}
  * credentials
  * timeout
  */
-export default (options={}) => {
-  options = mix({
-    method: 'GET',
-    url: '',
-    dataType: 'json',
-    data: {},
-    headers: {},
-    timeout: 30 * 1000,
-    async: true,
-    cache: true,
-    credentials: false
-  }, options)
+export default (options = {}) => {
+  options = mix(
+    {
+      method: 'GET',
+      url: '',
+      dataType: 'json',
+      data: {},
+      headers: {},
+      timeout: 30 * 1000,
+      async: true,
+      cache: true,
+      credentials: false
+    },
+    options
+  )
 
   options.method = options.method.toUpperCase()
   options.dataType = options.dataType.toUpperCase()
@@ -37,18 +40,30 @@ export default (options={}) => {
     if (!options.cache) {
       options.data._ = Math.random().toString().slice(2)
     }
-    options.url += (options.url.indexOf('?') > 0 ? '&' : '?') + param(options.data)
+    options.url +=
+      (options.url.indexOf('?') > 0 ? '&' : '?') + param(options.data)
   }
 
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest()
     const onerror = error => {
       reject({
-        xhr,
+        request: xhr,
         options,
         error
       })
     }
+    const onsuccess = data => {
+      resolve({
+        request: xhr,
+        options,
+        status: xhr.status,
+        statusText: xhr.statusText,
+        headers: xhr.getAllResponseHeaders ? xhr.getAllResponseHeaders() : {},
+        data
+      })
+    }
+
     const onload = () => {
       let status = xhr.status
       // IE会将204设置为1223
@@ -58,12 +73,12 @@ export default (options={}) => {
 
         if (options.dataType === 'JSON') {
           try {
-            resolve(parseJSON(resp))
-          } catch(err) {
+            onsuccess(parseJSON(resp))
+          } catch (err) {
             onerror(err)
           }
         } else {
-          resolve(resp)
+          onsuccess(resp)
         }
       } else {
         onerror(new Error('Request Error ' + xhr.status))
@@ -75,9 +90,12 @@ export default (options={}) => {
     const onabort = () => {
       onerror(new Error('Request Abort'))
     }
-    const setRequestHeader = 'setRequestHeader' in xhr ? (k, v) => {
-      xhr.setRequestHeader(k, v)
-    } : noop
+    const setRequestHeader =
+      'setRequestHeader' in xhr
+        ? (k, v) => {
+            xhr.setRequestHeader(k, v)
+          }
+        : noop
 
     if ('onload' in xhr) {
       xhr.onload = onload
@@ -115,7 +133,7 @@ export default (options={}) => {
     try {
       xhr.timeout = options.timeout
       xhr.ontimeout = ontimeout
-    } catch(err) {
+    } catch (err) {
       setTimeout(ontimeout, options.timeout)
     }
 
@@ -125,7 +143,7 @@ export default (options={}) => {
       xhr.withCredentials = options.credentials
     }
 
-    for(let i in options.headers) {
+    for (let i in options.headers) {
       setRequestHeader(i, options.headers[i])
     }
     // setRequestHeader('X-Requested-With', 'XMLHttpRequest')

@@ -18,11 +18,14 @@ class Promise {
     this._reason = null
 
     if (isFunction(executor)) {
-      executor((...args) => {
-        this.resolve(...args)
-      }, (...args) => {
-        this.reject(...args)
-      })
+      executor(
+        (...args) => {
+          this.resolve(...args)
+        },
+        (...args) => {
+          this.reject(...args)
+        }
+      )
     }
   }
 
@@ -43,11 +46,12 @@ class Promise {
       return
     }
 
-    const fns = state === FULFILLED ? this._onFulfilled.slice() : this._onRejected.slice()
+    const fns =
+      state === FULFILLED ? this._onFulfilled.slice() : this._onRejected.slice()
     const arg = state === FULFILLED ? this._value : this._reason
 
-    setTimeout(function() {
-      each(fns, function(fn) {
+    setTimeout(function () {
+      each(fns, function (fn) {
         try {
           fn(arg)
         } catch (err) {}
@@ -59,7 +63,7 @@ class Promise {
   }
 
   resolve(value) {
-    if(this._state !== PENDING) {
+    if (this._state !== PENDING) {
       return
     }
 
@@ -113,11 +117,14 @@ function resolve(promise, x) {
 
   if (isThenable(x)) {
     try {
-      x.then(function(value) {
-        resolve(promise, value)
-      }, function(reason) {
-        promise.reject(reason)
-      })
+      x.then(
+        function (value) {
+          resolve(promise, value)
+        },
+        function (reason) {
+          promise.reject(reason)
+        }
+      )
     } catch (err) {
       promise.reject(err)
     }
@@ -127,7 +134,7 @@ function resolve(promise, x) {
 }
 
 function wrapper(promise, fn, actionType) {
-  return function(val) {
+  return function (val) {
     if (isFunction(fn)) {
       try {
         let x = fn(val)
@@ -143,10 +150,10 @@ function wrapper(promise, fn, actionType) {
   }
 }
 
-Promise.defer = function() {
+Promise.defer = function () {
   const deferred = {}
 
-  deferred.promise = new Promise(function(resolve, reject) {
+  deferred.promise = new Promise(function (resolve, reject) {
     deferred.resolve = resolve
     deferred.reject = reject
   })
@@ -154,49 +161,55 @@ Promise.defer = function() {
   return deferred
 }
 
-Promise.race = function(arr) {
+Promise.race = function (arr) {
   const defer = Promise.defer()
 
-  each(arr, function(promise) {
-    promise.then(function(value) {
-      defer.resolve(value)
-    }, function(reason) {
-      defer.reject(reason)
-    })
+  each(arr, function (promise) {
+    promise.then(
+      function (value) {
+        defer.resolve(value)
+      },
+      function (reason) {
+        defer.reject(reason)
+      }
+    )
   })
 
   return defer.promise
 }
 
-Promise.all = function(arr) {
+Promise.all = function (arr) {
   const defer = Promise.defer()
   const results = []
   let length = arr.length
 
-  each(arr, function(promise, i) {
-    promise.then(function(value) {
-      results[i] = value
-      length--
+  each(arr, function (promise, i) {
+    promise.then(
+      function (value) {
+        results[i] = value
+        length--
 
-      if (length === 0) {
-        defer.resolve(results)
+        if (length === 0) {
+          defer.resolve(results)
+        }
+      },
+      function (reason) {
+        defer.reject(reason)
       }
-    }, function(reason) {
-      defer.reject(reason)
-    })
+    )
   })
 
   return defer.promise
 }
 
-Promise.resolve = function(value) {
-  return new Promise(function(resolve) {
+Promise.resolve = function (value) {
+  return new Promise(function (resolve) {
     resolve(value)
   })
 }
 
-Promise.reject = function(reason) {
-  return new Promise(function(resolve, reject) {
+Promise.reject = function (reason) {
+  return new Promise(function (resolve, reject) {
     reject(reason)
   })
 }
@@ -207,8 +220,8 @@ export function isThenable(val) {
 
 const isFunction = isType('Function')
 function isType(type) {
-  return function(obj) {
-    return {}.toString.call(obj) == "[object " + type + "]"
+  return function (obj) {
+    return {}.toString.call(obj) == '[object ' + type + ']'
   }
 }
 

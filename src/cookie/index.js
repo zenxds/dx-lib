@@ -20,7 +20,8 @@ export const get = name => {
 
   if (isNotEmptyString(name)) {
     match = String(document.cookie).match(
-        new RegExp('(?:^| )' + name + '(?:(?:=([^;]*))|;|$)'))
+      new RegExp('(?:^| )' + name + '(?:(?:=([^;]*))|;|$)')
+    )
     if (match) {
       ret = match[1] ? decode(match[1]) : ''
     }
@@ -29,13 +30,13 @@ export const get = name => {
 }
 
 /**
- * 
- * @param {*} name 
- * @param {*} val 
- * @param {*} domain 
- * @param {Number/Date} expires 
- * @param {*} path 
- * @param {*} secure 
+ *
+ * @param {*} name
+ * @param {*} val
+ * @param {*} domain
+ * @param {Number/Date} expires
+ * @param {*} path
+ * @param {*} secure
  */
 export const set = (name, val, domain, expires, path, secure) => {
   let text = String(encode(val))

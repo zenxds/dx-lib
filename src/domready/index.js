@@ -1,4 +1,4 @@
-import Promise from '../Promise/index.js'
+import Promise from '../Promise'
 
 /**
  * thanks to https://github.com/jquery/jquery/blob/1.12-stable/src/core/ready.js
@@ -20,11 +20,11 @@ function ready() {
  */
 function detach() {
   if (document.addEventListener) {
-    document.removeEventListener("DOMContentLoaded", completed)
-    window.removeEventListener("load", completed)
+    document.removeEventListener('DOMContentLoaded', completed)
+    window.removeEventListener('load', completed)
   } else {
-    document.detachEvent("onreadystatechange", completed)
-    window.detachEvent("onload", completed)
+    document.detachEvent('onreadystatechange', completed)
+    window.detachEvent('onload', completed)
   }
 }
 
@@ -33,10 +33,11 @@ function detach() {
  */
 function completed() {
   // readyState === "complete" is good enough for us to call the dom ready in oldIE
-  if (document.addEventListener ||
-    window.event.type === "load" ||
-    document.readyState === "complete") {
-
+  if (
+    document.addEventListener ||
+    window.event.type === 'load' ||
+    document.readyState === 'complete'
+  ) {
     detach()
     ready()
   }
@@ -46,29 +47,29 @@ function completed() {
 // after the browser event has already occurred.
 // Support: IE6-10
 // Older IE sometimes signals "interactive" too soon
-if (document.readyState === "complete" ||
-  (document.readyState !== "loading" && !(document.documentElement && document.documentElement.doScroll))) {
-
+if (
+  document.readyState === 'complete' ||
+  (document.readyState !== 'loading' &&
+    !(document.documentElement && document.documentElement.doScroll))
+) {
   // Handle it asynchronously to allow scripts the opportunity to delay ready
   window.setTimeout(ready)
 
   // Standards-based browsers support DOMContentLoaded
 } else if (document.addEventListener) {
-
   // Use the handy event callback
-  document.addEventListener("DOMContentLoaded", completed)
+  document.addEventListener('DOMContentLoaded', completed)
 
   // A fallback to window.onload, that will always work
-  window.addEventListener("load", completed)
+  window.addEventListener('load', completed)
 
   // If IE event model is used
 } else if (document.attachEvent) {
-
   // Ensure firing before onload, maybe late but safe also for iframes
-  document.attachEvent("onreadystatechange", completed)
+  document.attachEvent('onreadystatechange', completed)
 
   // A fallback to window.onload, that will always work
-  window.attachEvent("onload", completed)
+  window.attachEvent('onload', completed)
 
   // If IE and not a frame
   // continually check to see if the document is ready
@@ -79,14 +80,12 @@ if (document.readyState === "complete" ||
   } catch (e) {}
 
   if (top && top.doScroll) {
-    (function doScrollCheck() {
+    ;(function doScrollCheck() {
       if (!isReady) {
-
         try {
-
           // Use the trick by Diego Perini
           // http://javascript.nwbox.com/IEContentLoaded/
-          top.doScroll("left")
+          top.doScroll('left')
         } catch (e) {
           return window.setTimeout(doScrollCheck, 50)
         }

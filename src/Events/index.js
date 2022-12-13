@@ -33,7 +33,7 @@ class Events {
     let cache = this.__events || (this.__events = {})
     let event, list
 
-    while (event = events.shift()) {
+    while ((event = events.shift())) {
       list = cache[event] || (cache[event] = [])
       list.push(callback)
     }
@@ -56,7 +56,7 @@ class Events {
   off(events, callback) {
     let cache = this.__events
     let event, list
-    
+
     if (!cache) {
       return this
     }
@@ -69,7 +69,7 @@ class Events {
 
     events = events ? events.split(eventSplitter) : keys(cache)
 
-    while (event = events.shift()) {
+    while ((event = events.shift())) {
       list = cache[event]
 
       if (!list) {
@@ -119,7 +119,7 @@ class Events {
       }
 
       // Execute event callbacks except one named "all"
-      if (event !== "all") {
+      if (event !== 'all') {
         returned = triggerEvents(list, rest, this) && returned
       }
 
@@ -140,7 +140,7 @@ Events.prototype.once = Events.prototype.one
 let keys = Object.keys
 
 if (!keys) {
-  keys = function(o) {
+  keys = function (o) {
     let result = []
 
     for (let name in o) {
@@ -183,8 +183,7 @@ function triggerEvents(list, args, context) {
         break
       case 3:
         for (; i < l; i += 1) {
-          pass =
-            list[i].call(context, a1, a2, a3) !== false && pass
+          pass = list[i].call(context, a1, a2, a3) !== false && pass
         }
         break
       default:

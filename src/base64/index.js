@@ -2,10 +2,11 @@
 import { encode as utf8Encode, decode as utf8Decode } from './utf8.js'
 
 // code顺序可以自定义
-const base64Code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
+const base64Code =
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='
 
 // http://www.webtoolkit.info/javascript-base64.html
-export const encode = function (input, code=base64Code) {
+export const encode = function (input, code = base64Code) {
   if (!input) {
     return ''
   }
@@ -37,13 +38,17 @@ export const encode = function (input, code=base64Code) {
       enc4 = 64
     }
 
-    output = output + code.charAt(enc1) + code.charAt(enc2) +
-      code.charAt(enc3) + code.charAt(enc4)
+    output =
+      output +
+      code.charAt(enc1) +
+      code.charAt(enc2) +
+      code.charAt(enc3) +
+      code.charAt(enc4)
   }
   return output
 }
 
-export const decode = function(input, code=base64Code) {
+export const decode = function (input, code = base64Code) {
   if (!input) {
     return ''
   }

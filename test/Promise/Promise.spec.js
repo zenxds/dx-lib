@@ -1,27 +1,24 @@
-import test from 'ava'
-import Promise from '../../lib/Promise'
+import Promise from '../../src/Promise'
 
 const PENDING = 0
 const FULFILLED = 1
 const REJECTED = 2
 
-test('should call then more than once', async t => {
+test('should call then more than once', async () => {
   const promise = new Promise(function(resolve, reject) {
     resolve(1)
   })
 
   await promise.then(function(result) {
-    t.is(result, 1)
+    expect(result).toBe(1)
   })
 
   await promise.then(function(result) {
-    t.is(result, 1)
+    expect(result).toBe(1)
   })
-
-  t.pass()
 })
 
-test('should pass the result to next promise', async t => {
+test('should pass the result to next promise', async () => {
   const interval = 50
   
   const fun1 = function() {
@@ -49,19 +46,19 @@ test('should pass the result to next promise', async t => {
   }
 
   const output = await fun1().then(fun2).then(fun3)
-  t.is(output, 4)
+  expect(output).toBe(4)
 })
 
-test('should be ignore if the onFulfilled or onRejected is not a function', async t => {
+test('should be ignore if the onFulfilled or onRejected is not a function', async () => {
   const p1 = new Promise(function(resolve) {
     resolve(1)
   })
   const p2 = p1.then(null, 5)
   
-  t.is(await p2, 1)
+  expect(await p2).toBe(1)
 })
 
-test('should call the thenable', async t => {
+test('should call the thenable', async () => {
   let p1 = Promise.resolve(1)
   let p2 = p1.then(function() {
     return {
@@ -71,7 +68,7 @@ test('should call the thenable', async t => {
     }
   })
 
-  t.is(await p2, 2)
+  expect(await p2).toBe(2)
 
   p2 = p1.then(function() {
     return {
@@ -84,7 +81,7 @@ test('should call the thenable', async t => {
   try {
     await p2
   } catch(err) {
-    t.is(err, 2)
+    expect(err).toBe(2)
   }
 
   p2 = p1.then(function() {
@@ -98,11 +95,11 @@ test('should call the thenable', async t => {
   try {
     await p2
   } catch(err) {
-    t.truthy(err)
+    expect(err).toBeTruthy()
   }
 })
 
-test('should catch the err', async t => {
+test('should catch the err', async () => {
   const p1 = Promise.resolve(1)
   const p2 = p1.then(function() {
     a.b.c()
@@ -111,11 +108,11 @@ test('should catch the err', async t => {
   try {
     await p2
   } catch(err) {
-    t.is(p2._state, REJECTED)
+    expect(p2._state).toEqual(REJECTED)
   }
 })
 
-test('should reject if the resolve value is promise self', async t => {
+test('should reject if the resolve value is promise self', async () => {
   const p1 = Promise.resolve()
   const p2 = p1.then(function() {
     return p2
@@ -124,40 +121,40 @@ test('should reject if the resolve value is promise self', async t => {
   try {
     await p2
   } catch(err) {
-    t.truthy(p2._reason instanceof TypeError)
+    expect(p2._reason instanceof TypeError).toBeTruthy()
   }
 })
 
-test("should tell is pending", t => {
+test("should tell is pending", () => {
   const p = new Promise(function(resolve, reject) {})
-  t.truthy(p.isPending())
-  t.falsy(p.isFulfilled())
-  t.falsy(p.isRejected())
+  expect(p.isPending()).toBeTruthy()
+  expect(p.isFulfilled()).toBeFalsy()
+  expect(p.isRejected()).toBeFalsy()
 })
 
-test("should tell is fulfilled", t => {
+test("should tell is fulfilled", () => {
   const p = new Promise(function(resolve, reject) {
     resolve()
   })
 
-  t.falsy(p.isPending())
-  t.truthy(p.isFulfilled())
-  t.falsy(p.isRejected())
+  expect(p.isPending()).toBeFalsy()
+  expect(p.isFulfilled()).toBeTruthy()
+  expect(p.isRejected()).toBeFalsy()
 
   p.resolve()
-  t.truthy(p.isFulfilled())
+  expect(p.isFulfilled()).toBeTruthy()
 })
 
-test("should tell is rejected", t => {
+test("should tell is rejected", () => {
   const p = new Promise(function(resolve, reject) {
     reject()
   })
-  t.falsy(p.isPending())
-  t.falsy(p.isFulfilled())
-  t.truthy(p.isRejected())
+  expect(p.isPending()).toBeFalsy()
+  expect(p.isFulfilled()).toBeFalsy()
+  expect(p.isRejected()).toBeTruthy()
 })
 
-test.cb("should finally call the handler", t => {
+test("should finally call the handler", done => {
   let counter = 0
   let handler = function(val) {
     counter++
@@ -170,12 +167,12 @@ test.cb("should finally call the handler", t => {
   p.finally(handler)
 
   setTimeout(function() {
-    t.is(counter, 2)
-    t.end()
+    expect(counter).toBe(2)
+    done()
   }, 10)
 })
 
-test.cb("should catch the error finally", t => {
+test("should catch the error finally", done => {
   let err = new Error()
   let fun1 = function() {
     return new Promise(function(resolve, reject) {
@@ -203,12 +200,12 @@ test.cb("should catch the error finally", t => {
     .then(fun2)
     .then(fun3)
     ["catch"](function(e) {
-      t.is(e, err)
-      t.end()
+      expect(e).toBe(err)
+      done()
     })
 })
 
-test.cb("should get the result after the promises resolve", t => {
+test("should get the result after the promises resolve", done => {
   const promises = [1, 2, 3].map(function(i) {
     return new Promise(function(resolve) {
       resolve(i * i)
@@ -216,18 +213,17 @@ test.cb("should get the result after the promises resolve", t => {
   })
 
   Promise.all(promises).then(function(result) {
-    t.deepEqual(result, [1, 4, 9])
-    t.deepEqual(
+    expect(result).toEqual([1, 4, 9])
+    expect(
       promises.map(function(item) {
         return item._state
-      })
-    , [1, 1, 1])
+      })).toEqual([1, 1, 1])
 
-    t.end()
+    done()
   })
 })
 
-test.cb("should execute in order", t => {
+test("should execute in order", done => {
   const result = []
   const p1 = new Promise(function(resolve) {
     setTimeout(function() {
@@ -248,12 +244,12 @@ test.cb("should execute in order", t => {
   })
 
   Promise.all([p1, p2, p3]).then(function() {
-    t.deepEqual(result, [2, 1, 3])
-    t.end()
+    expect(result).toEqual([2, 1, 3])
+    done()
   })
 })
 
-test.cb("should get the error if some throw error", t => {
+test("should get the error if some throw error", done => {
   const promises = [3, 2, 1].map(function(i) {
     return new Promise(function(resolve, reject) {
       reject(i * i)
@@ -261,12 +257,12 @@ test.cb("should get the error if some throw error", t => {
   })
 
   Promise.all(promises).catch(function(result) {
-    t.is(result, 9)
-    t.end()
+    expect(result).toBe(9)
+    done()
   })
 })
 
-test.cb("should rece the promises", t => {
+test("should rece the promises", done => {
   const promises = [1, 2, 3].map(function(i) {
     return new Promise(function(resolve) {
       setTimeout(function() {
@@ -278,29 +274,29 @@ test.cb("should rece the promises", t => {
   Promise.race([Promise.reject(1), Promise.resolve(2)]).then(null, function(
     err
   ) {
-    t.is(err, 1)
+    expect(err).toBe(1)
   })
 
   Promise.race(promises).then(function(result) {
-    t.is(result, 1)
-    t.end()
+    expect(result).toBe(1)
+    done()
   })
 })
 
-test("should reject a value to promise", t => {
+test("should reject a value to promise", () => {
   const promise = Promise.reject(new Error())
-  t.truthy(promise instanceof Promise)
+  expect(promise instanceof Promise).toBeTruthy()
 })
 
-test("should resolve a value to promise", t => {
+test("should resolve a value to promise", () => {
   const promise = Promise.resolve()
-  t.truthy(promise instanceof Promise)
+  expect(promise instanceof Promise).toBeTruthy()
 })
 
-test('defer', t => {
+test('defer', () => {
   const defer = Promise.defer()
 
-  t.truthy(defer.resolve instanceof Function)
-  t.truthy(defer.reject instanceof Function)
-  t.truthy(defer.promise instanceof Promise)
+  expect(defer.resolve instanceof Function).toBeTruthy()
+  expect(defer.reject instanceof Function).toBeTruthy()
+  expect(defer.promise instanceof Promise).toBeTruthy()
 })

@@ -1,7 +1,7 @@
 const toString = Object.prototype.toString
 const isType = type => {
   return obj => {
-    return toString.call(obj) == "[object " + type + "]"
+    return toString.call(obj) == '[object ' + type + ']'
   }
 }
 
@@ -26,7 +26,11 @@ const isPlainObject = object => {
 
   try {
     // Not own constructor property must be Object
-    if ((constructor = object.constructor) && !hasOwnProperty(object, 'constructor') && !hasOwnProperty(constructor.prototype, 'isPrototypeOf')) {
+    if (
+      (constructor = object.constructor) &&
+      !hasOwnProperty(object, 'constructor') &&
+      !hasOwnProperty(constructor.prototype, 'isPrototypeOf')
+    ) {
       return false
     }
   } catch (e) {
@@ -36,7 +40,8 @@ const isPlainObject = object => {
 
   // Own properties are enumerated firstly, so to speed up,
   // if last one is own, then all properties are own.
-  for (key in object) {}
+  for (key in object) {
+  }
 
   return key === undefined || hasOwnProperty(object, key)
 }
