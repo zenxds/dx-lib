@@ -31,5 +31,6 @@ test('ajax success', async () => {
   const response = await request
 
   expect(response.status).toBe(200)
+  expect(response.headers.contentType).toBe('text/html')
   expect(request._state).toBe(1)
 })
