@@ -85,3 +85,8 @@ export const decode = function (input, code = base64Code) {
   output = utf8Decode(output)
   return output
 }
+
+export {
+  utf8Encode,
+  utf8Decode
+}

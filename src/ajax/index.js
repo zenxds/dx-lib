@@ -2,6 +2,7 @@ import { param } from '../param'
 import Promise from '../Promise'
 import { parseJSON } from '../json'
 import isPlainObject from './isPlainObject'
+import parseHeaders from './parseHeaders'
 
 const noop = function () {}
 
@@ -175,24 +176,4 @@ function mix(target, ...sources) {
     }
   }
   return target
-}
-
-function camelize(str) {
-  return str.replace(/[-_][^-_]/g, function (match) {
-    return match.charAt(1).toUpperCase()
-  })
-}
-
-function parseHeaders(str) {
-  const ret = {}
-  const arr = str.trim().split(/[\r\n]+/)
-
-  for (let i = 0; i < arr.length; i++) {
-    const parts = arr[i].split(': ')
-    const header = camelize(parts.shift())
-    const value = parts.join(': ')
-    ret[header] = value
-  }
-
-  return ret
 }

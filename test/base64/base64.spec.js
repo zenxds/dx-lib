@@ -1,6 +1,5 @@
 import { encode, decode } from '../../src/base64'
 
-
 test('should encode to the right pattern', () => {
   let str = "abcd"
   expect(/[A-Za-z\+\=\/]+/.test(encode(str))).toBeTruthy()

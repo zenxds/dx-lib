@@ -38,7 +38,7 @@ export const get = name => {
  * @param {*} path
  * @param {*} secure
  */
-export const set = (name, val, { domain, expires, path, secure }) => {
+export const set = (name, val, { domain, expires, path, secure } = {}) => {
   let text = String(encode(val))
   let date = expires
 
@@ -71,7 +71,7 @@ export const set = (name, val, { domain, expires, path, secure }) => {
   document.cookie = name + '=' + text
 }
 
-export const remove = (name, { domain, path, secure }) => {
+export const remove = (name, { domain, path, secure } = {}) => {
   // 置空，并立刻过期
   set(name, '', domain, -1, path, secure)
 }
