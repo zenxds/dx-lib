@@ -1,4 +1,4 @@
-{
+module.exports = {
   "presets": [
     [
       "@babel/preset-env",
@@ -11,8 +11,8 @@
           "ie": "8"
         },
         "loose": true,
-        "useBuiltIns": "usage",
-        "corejs": "3.26.1"
+        // "useBuiltIns": "usage",
+        // "corejs": "3.26.1"
       }
     ]
   ],

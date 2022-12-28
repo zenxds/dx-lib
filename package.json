@@ -1,6 +1,6 @@
 {
   "name": "dx-lib",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "dx fe lib",
   "main": "index.js",
   "scripts": {
