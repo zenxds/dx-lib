@@ -1,5 +1,4 @@
 import { param } from '../param'
-import Promise from '../Promise'
 import { parseJSON } from '../json'
 import isPlainObject from './isPlainObject'
 import parseHeaders from './parseHeaders'

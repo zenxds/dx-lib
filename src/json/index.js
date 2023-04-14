@@ -1,7 +1,7 @@
-import parseJSON from './parse.js'
-import stringifyJSON from './stringify.js'
+export function parseJSON(data) {
+  return JSON.parse(data + '')
+}
 
-export {
-  parseJSON,
-  stringifyJSON
+export function stringifyJSON(value, replacer, space) {
+  return JSON.stringify(value, replacer, space)
 }

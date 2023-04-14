@@ -1,5 +1,4 @@
 import { param } from '../param'
-import Promise from '../Promise'
 
 /**
  * jsonp

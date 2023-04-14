@@ -1,6 +1,6 @@
 # dx-lib
 
-![build status](https://dev.dingxiang-inc.com/fe/dx-lib/badges/master/build.svg) dx fe lib 
+dx lib 
 
 ## install
 
@@ -38,3 +38,7 @@ yarn add dx-lib --save
   "plugins": []
 }
 ```
+
+## 版本说明
+
+* 0.4开始，默认使用全局的JSON、Promise，不再使用内置的对应实现

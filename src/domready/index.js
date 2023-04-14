@@ -1,10 +1,13 @@
-import Promise from '../Promise'
-
 /**
  * thanks to https://github.com/jquery/jquery/blob/1.12-stable/src/core/ready.js
  */
 let isReady = false
-let readyDefer = Promise.defer()
+let deferred = {}
+
+deferred.promise = new Promise(function (resolve, reject) {
+  deferred.resolve = resolve
+  deferred.reject = reject
+})
 
 function ready() {
   if (isReady) {
@@ -12,7 +15,7 @@ function ready() {
   }
 
   isReady = true
-  readyDefer.resolve()
+  deferred.resolve()
 }
 
 /**
@@ -100,4 +103,4 @@ if (
   }
 }
 
-export default readyDefer.promise
+export default deferred.promise

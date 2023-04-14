@@ -1,10 +1,5 @@
-import Promise from '../Promise'
-
-const head = document.head || document.getElementsByTagName('head')[0]
-
 export default function (url, options = {}) {
-  let node = document.createElement('script')
-  let defer = Promise.defer()
+  const head = document.head || document.getElementsByTagName('head')[0]
 
   options.timeout = options.timeout || 10000
   if (options.hour) {
@@ -12,41 +7,42 @@ export default function (url, options = {}) {
     url += `t=${Math.floor(new Date() / 3600000)}`
   }
 
-  node.charset = 'utf-8'
-  node.async = true
-  node.setAttribute('crossorigin', 'anonymous')
-  // node.crossOrigin = 'anonymous'
+  return new Promise((resolve, reject) => {
+    let node = document.createElement('script')
+    node.charset = 'utf-8'
+    node.async = true
+    node.setAttribute('crossorigin', 'anonymous')
+    // node.crossOrigin = 'anonymous'
 
-  if ('onload' in node) {
-    node.onload = onload
-  } else {
-    node.onreadystatechange = function () {
-      if (/loaded|complete/.test(node.readyState)) {
-        onload()
+    if ('onload' in node) {
+      node.onload = onload
+    } else {
+      node.onreadystatechange = function () {
+        if (/loaded|complete/.test(node.readyState)) {
+          onload()
+        }
       }
     }
-  }
 
-  if ('onerror' in node) {
-    node.onerror = function (err) {
-      defer.reject(err)
+    if ('onerror' in node) {
+      node.onerror = function (err) {
+        reject(err)
+      }
     }
-  }
 
-  setTimeout(function () {
-    defer.reject(new Error('timeout'))
-  }, options.timeout)
+    setTimeout(function () {
+      reject(new Error('timeout'))
+    }, options.timeout)
 
-  function onload() {
-    node.onreadystatechange = node.onload = null
-    head.removeChild(node)
-    node = null
+    function onload() {
+      node.onreadystatechange = node.onload = null
+      head.removeChild(node)
+      node = null
 
-    defer.resolve()
-  }
+      resolve()
+    }
 
-  node.src = url
-  head.appendChild(node)
-
-  return defer.promise
+    node.src = url
+    head.appendChild(node)
+  })
 }
